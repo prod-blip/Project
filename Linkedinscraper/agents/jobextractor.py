@@ -73,9 +73,12 @@ def search_linkedin_jobs_tool(context: RunContext[Any], keyword: str) -> Dict[st
     """
     return search_linkedin_jobs(keyword)
 
-def get_job_ids_for_keyword(keyword: str) -> List[JobSearchId]:
-    """
-    Helper function to get job IDs for a specific keyword.
-    """
-    result = job_search_agent.run_sync(f"Extract job IDs for '{keyword}' jobs")
-    return result.data
+# def get_job_ids_for_keyword(keyword: str) -> List[JobSearchId]:
+#     """
+#     Helper function to get job IDs for a specific keyword.
+#     """
+#     result = job_search_agent.run_sync(f"Extract job IDs for '{keyword}' jobs")
+#     return result.data
+
+result = job_search_agent.run_sync("please fetch job id for 'product manager' keyword")
+print(result.data)

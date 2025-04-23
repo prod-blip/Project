@@ -16,27 +16,17 @@ class AgentState(TypedDict):
     error: Optional[str]
 
 
-async def extract(state: AgentState) -> AgentState:
+def extract(state: AgentState) -> AgentState:
     """Extract job IDs for the provided search keyword."""
-    try:
+    
         # Get the search keyword from the state
-        keyword = state["search_keyword"]
+    keyword = state["search_keyword"]
         
         # Get job IDs for the keyword
-        job_ids = get_job_ids_for_keyword(keyword)
+    job_ids = get_job_ids_for_keyword(keyword)
         
-        # Update the state with the job IDs
-        return {
-            **state,
-            "job_ids": job_ids,
-            "status": "extracted_job_ids"
-        }
-    except Exception as e:
-        return {
-            **state,
-            "status": "error",
-            "error": f"Error extracting job IDs: {str(e)}"
-        }
+        
+        
 
 
 async def details(state: AgentState) -> AgentState:
@@ -89,7 +79,14 @@ builder.add_node("Job Details Agent", details)
 
 # Add edges with conditional routing
 builder.add_edge(START, "Job Extractor Agent")
-builder.add_edge("Job Extractor Agent", should_continue)
+builder.add_conditional_edges(
+    "Job Extractor Agent",
+    should_continue,  # This is the routing function that returns a node name
+    {
+        END: END,  # If should_continue returns END, route to END
+        "Job Details Agent": "Job Details Agent"  # If should_continue returns "Job Details Agent", route to that node
+    }
+)
 builder.add_edge("Job Details Agent", END)
 
 # Compile the graph
@@ -120,4 +117,7 @@ async def run_workflow(search_keyword: str):
 
 # Example usage
 if __name__ == "__main__":
-    asyncio.run(run_workflow("product manager"))
+    async def main():
+        await run_workflow("product manager")
+    
+    asyncio.run(main())

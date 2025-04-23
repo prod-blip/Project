@@ -85,9 +85,12 @@ def job_details_tool(context: RunContext[Any], job_id: str) -> Dict[str, Any] | 
     """
     return get_job_details(job_id)
 
-def get_details_for_job(job_id: str) -> JobDetail:
-    """
-    Helper function to get details for a specific job ID.
-    """
-    result = job_details_agent.run_sync(f"Analyze job details for job ID: {job_id}")
-    return result.data
+# def get_details_for_job(job_id: str) -> JobDetail:
+#     """
+#     Helper function to get details for a specific job ID.
+#     """
+#     result = job_details_agent.run_sync(f"Analyze job details for job ID: {job_id}")
+#     return result.data
+
+result = job_details_agent.run_sync("please fetch job id for '4198449849' id")
+print(result.data)
