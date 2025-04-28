@@ -92,5 +92,5 @@ def job_details_tool(context: RunContext[Any], job_id: str) -> Dict[str, Any] | 
 #     result = job_details_agent.run_sync(f"Analyze job details for job ID: {job_id}")
 #     return result.data
 
-result = job_details_agent.run_sync("please fetch job id for '4198449849' id")
-print(result.data)
+# result = job_details_agent.run_sync("please fetch job id for '4198449849' id")
+# print(result.data)
